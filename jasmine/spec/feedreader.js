@@ -10,6 +10,18 @@ $(function() {
     /* 这是我们第一个测试用例 - 其中包含了一定数量的测试。这个用例的测试
      * 都是关于 Rss 源的定义的，也就是应用中的 allFeeds 变量。
     */
+    function checkAllfeeds(name) {
+       // 将相似的代码都移入到该方法中，避免重复编写相同代码。
+        allFeeds.forEach(function (feeds) {
+            if(name === 'url'){
+                var regularExpressionUrl = /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/;
+                expect(feeds.url).toMatch(regularExpressionUrl);
+            }
+            expect(feeds.url).toBeDefined();
+            expect(feeds.url).not.toBe('');
+        })
+
+    }
     describe('RSS Feeds', function() {
         /* 这是我们的第一个测试 - 它用来保证 allFeeds 变量被定义了而且
          * 不是空的。在你开始做这个项目剩下的工作之前最好实验一下这个测试
@@ -26,20 +38,14 @@ $(function() {
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
         it('url exist and not none', function () {
-            allFeeds.forEach(function (feeds) {
-                expect(feeds.url).toBeDefined();
-                expect(feeds.url).not.toBe('');
-            })
+            checkAllfeeds('url');
         });
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
         it('name exist and not none', function () {
-            allFeeds.forEach(function (feeds) {
-                expect(feeds.name).toBeDefined();
-                expect(feeds.name).not.toBe('');
-            })
+            checkAllfeeds('name');
         });
     });
 
@@ -84,15 +90,12 @@ $(function() {
          * 和异步的 done() 函数。
          */
         beforeEach(function (done) {
-            loadFeed(0, function () {
-                done();
-            });
+            loadFeed(0, done);
         });
 
-        it('after loadFeed function', function (done) {
+        it('after loadFeed function', function () {
             var entriesClass = document.getElementsByClassName('entry');
             expect(entriesClass.length).not.toBe(0);
-            done();
         });
     });
 
@@ -111,9 +114,8 @@ $(function() {
                 done();
             });
         });
-        it('change feed selection', function (done) {
+        it('change feed selection', function () {
             expect(flag).toBe(true);
-            done();
         });
     });
 
